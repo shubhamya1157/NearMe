@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign In — NearMe</title>
+    <title>Login — NearMe</title>
     <link rel="stylesheet" href="css/index.css">
 </head>
 <body>
@@ -17,7 +17,7 @@
             </a>
             <ul class="nav-links">
                 <li><a href="index.html">Home</a></li>
-                <li><a href="register.html" class="btn-nav-primary">Sign Up</a></li>
+                <li><a href="register.html" class="btn-nav-primary">Register</a></li>
             </ul>
         </div>
     </header>
@@ -26,8 +26,8 @@
     <main class="main-content">
         <div class="auth-wrapper">
             <div class="auth-card">
-                <h1>Welcome Back</h1>
-                <p class="subtitle">Sign in to find people and match hobbies near you</p>
+                <h2>Login</h2>
+                <p class="subtitle">Enter your email and password to access your account</p>
 
                 <!-- Dynamic Alert Banner -->
                 <div id="alertBox" style="display: none;"></div>
@@ -35,31 +35,21 @@
                 <form action="../backend/login.php" method="POST">
                     <div class="form-group">
                         <label for="email">Email Address</label>
-                        <input type="email" id="email" name="email" class="form-control" placeholder="you@example.com" required autofocus>
+                        <input type="email" id="email" name="email" class="form-control" placeholder="name@example.com" required autofocus>
                     </div>
 
                     <div class="form-group">
                         <label for="password">Password</label>
-                        <input type="password" id="password" name="password" class="form-control" placeholder="••••••••" required>
+                        <input type="password" id="password" name="password" class="form-control" placeholder="Enter your password" required>
                     </div>
 
-                    <button type="submit" class="btn btn-primary btn-block" style="margin-top: 0.5rem;">
-                        Sign In
+                    <button type="submit" class="btn btn-primary btn-block">
+                        Login
                     </button>
                 </form>
 
-                <!-- Quick Autofill for Demo Evaluation -->
-                <div style="margin-top: 1.5rem; padding-top: 1.25rem; border-top: 1px dashed var(--border-color); text-align: center;">
-                    <p style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 0.6rem;">
-                        Quick testing with demo account:
-                    </p>
-                    <button type="button" id="btnAutofillDemo" class="btn btn-secondary btn-sm" style="width: 100%;">
-                        ⚡ Autofill Demo Account (Alice)
-                    </button>
-                </div>
-
-                <p style="text-align: center; font-size: 0.88rem; margin-top: 1.5rem; color: var(--text-muted);">
-                    Don't have an account? <a href="register.html" style="color: var(--primary); font-weight: 600; text-decoration: none;">Create one here</a>
+                <p style="text-align: center; font-size: 0.9rem; margin-top: 1.5rem; color: var(--text-muted);">
+                    Don't have an account? <a href="register.html" style="color: var(--primary); font-weight: 600; text-decoration: none;">Register here</a>
                 </p>
             </div>
         </div>
@@ -67,39 +57,35 @@
 
     <!-- Footer -->
     <footer class="site-footer">
-        <p>&copy; 2026 NearMe Application. Built with Procedural PHP &amp; MySQL.</p>
+        <p>&copy; 2026 NearMe. Built with Procedural PHP &amp; MySQL.</p>
     </footer>
 
     <script>
-        // Check for URL query parameters to show alerts
         document.addEventListener('DOMContentLoaded', function () {
             const params = new URLSearchParams(window.location.search);
             const alertBox = document.getElementById('alertBox');
 
             if (params.has('error')) {
                 const err = params.get('error');
-                let message = 'An error occurred during sign in.';
+                let message = 'An error occurred during login.';
                 if (err === 'invalid_credentials') {
-                    message = 'Incorrect email or password. Please verify and try again.';
+                    message = 'Incorrect email or password. Please try again.';
                 } else if (err === 'empty_fields') {
-                    message = 'Please fill in both email and password.';
+                    message = 'Please enter both email and password.';
+                } else if (err === 'session_expired') {
+                    message = 'Your session has expired. Please log in again.';
                 }
                 alertBox.className = 'alert alert-error';
                 alertBox.innerHTML = `<span>⚠️</span> <span>${message}</span>`;
                 alertBox.style.display = 'flex';
             } else if (params.has('logged_out')) {
                 alertBox.className = 'alert alert-success';
-                alertBox.innerHTML = `<span>✅</span> <span>You have been safely signed out.</span>`;
+                alertBox.innerHTML = `<span>✅</span> <span>You have logged out successfully.</span>`;
                 alertBox.style.display = 'flex';
-            }
-
-            // Autofill demo button
-            const btnDemo = document.getElementById('btnAutofillDemo');
-            if (btnDemo) {
-                btnDemo.addEventListener('click', function () {
-                    document.getElementById('email').value = 'alice@example.com';
-                    document.getElementById('password').value = 'demo123';
-                });
+            } else if (params.has('registered')) {
+                alertBox.className = 'alert alert-success';
+                alertBox.innerHTML = `<span>✅</span> <span>Account created! Please log in.</span>`;
+                alertBox.style.display = 'flex';
             }
         });
     </script>

@@ -1,115 +1,78 @@
 // frontend/js/location.js
-// Handles browser geolocation detection, preset coordinates, and address reverse geocoding
+// Captures live browser coordinates and reverse-geocodes into the address field
 
 document.addEventListener('DOMContentLoaded', function () {
-    const btnDetect = document.getElementById('btnDetectLocation');
+    const btnGetLocation = document.getElementById('btnGetLocation');
     const inputLat = document.getElementById('latitude');
     const inputLon = document.getElementById('longitude');
     const inputAddress = document.getElementById('address');
     const statusText = document.getElementById('locationStatus');
 
-    // Preset location data
-    const presets = {
-        kota: {
-            name: 'Kota (Demo Center)',
-            lat: 25.18000000,
-            lon: 75.83000000,
-            address: 'Station Road, Nayapura, Kota, Rajasthan'
-        },
-        jaipur: {
-            name: 'Jaipur',
-            lat: 26.91240000,
-            lon: 75.78730000,
-            address: 'MI Road, Jaipur, Rajasthan'
-        },
-        delhi: {
-            name: 'Delhi NCR',
-            lat: 28.61390000,
-            lon: 77.20900000,
-            address: 'Connaught Place, New Delhi'
-        },
-        mumbai: {
-            name: 'Mumbai',
-            lat: 19.07600000,
-            lon: 72.87770000,
-            address: 'Bandra West, Mumbai, Maharashtra'
-        },
-        bangalore: {
-            name: 'Bangalore',
-            lat: 12.97160000,
-            lon: 77.59460000,
-            address: 'Koramangala, Bengaluru, Karnataka'
-        }
-    };
-
-    // Auto-detect button handler
-    if (btnDetect) {
-        btnDetect.addEventListener('click', function () {
+    if (btnGetLocation) {
+        btnGetLocation.addEventListener('click', function () {
             if (!navigator.geolocation) {
                 if (statusText) {
-                    statusText.textContent = '❌ Geolocation is not supported by your browser. Please enter coordinates manually or use a preset below.';
-                    statusText.style.color = '#ef4444';
+                    statusText.textContent = 'Geolocation is not supported by your browser. Please enter coordinates manually.';
+                    statusText.style.color = '#dc2626';
+                    statusText.style.display = 'block';
                 }
                 return;
             }
 
             if (statusText) {
-                statusText.textContent = '🛰️ Requesting your location from browser...';
+                statusText.textContent = 'Getting your location from browser...';
                 statusText.style.color = '#4f46e5';
+                statusText.style.display = 'block';
             }
-            btnDetect.disabled = true;
+            btnGetLocation.disabled = true;
 
             navigator.geolocation.getCurrentPosition(
                 function (position) {
-                    const lat = position.coords.latitude.toFixed(8);
-                    const lon = position.coords.longitude.toFixed(8);
+                    const lat = position.coords.latitude.toFixed(6);
+                    const lon = position.coords.longitude.toFixed(6);
 
                     if (inputLat) inputLat.value = lat;
                     if (inputLon) inputLon.value = lon;
 
                     if (statusText) {
-                        statusText.textContent = `✅ Location captured: ${lat}, ${lon}. Finding address...`;
-                        statusText.style.color = '#10b981';
+                        statusText.textContent = 'Location detected. Fetching address...';
+                        statusText.style.color = '#16a34a';
                     }
-                    btnDetect.disabled = false;
+                    btnGetLocation.disabled = false;
 
-                    // Try reverse geocoding via OpenStreetMap Nominatim
+                    // Reverse geocode to get city / locality using OpenStreetMap Nominatim
                     fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`)
                         .then(res => res.json())
                         .then(data => {
-                            if (data && data.display_name && inputAddress && (!inputAddress.value || inputAddress.value.trim() === '')) {
+                            if (data && data.display_name && inputAddress) {
                                 inputAddress.value = data.display_name;
                                 if (statusText) {
-                                    statusText.textContent = `✅ Location captured & address autofilled!`;
+                                    statusText.textContent = `Location and address detected successfully.`;
+                                    statusText.style.color = '#16a34a';
                                 }
                             }
                         })
                         .catch(() => {
-                            // Ignore Nominatim rate-limit or offline errors gracefully
                             if (statusText) {
-                                statusText.textContent = `✅ Coordinates set: ${lat}, ${lon}. (Enter address if needed)`;
+                                statusText.textContent = `Coordinates set (${lat}, ${lon}).`;
+                                statusText.style.color = '#16a34a';
                             }
                         });
                 },
-                function (err) {
-                    btnDetect.disabled = false;
-                    let msg = 'Failed to get location. ';
-                    switch (err.code) {
-                        case err.PERMISSION_DENIED:
-                            msg += 'Permission was denied. Please allow location access or choose a preset.';
-                            break;
-                        case err.POSITION_UNAVAILABLE:
-                            msg += 'Position unavailable. Check your device GPS.';
-                            break;
-                        case err.TIMEOUT:
-                            msg += 'Request timed out.';
-                            break;
-                        default:
-                            msg += err.message;
+                function (error) {
+                    btnGetLocation.disabled = false;
+                    let msg = 'Unable to retrieve your location.';
+                    if (error.code === error.PERMISSION_DENIED) {
+                        msg = 'Location permission was denied. Please allow location access or type coordinates manually.';
+                    } else if (error.code === error.POSITION_UNAVAILABLE) {
+                        msg = 'Location information is unavailable.';
+                    } else if (error.code === error.TIMEOUT) {
+                        msg = 'Location request timed out.';
                     }
                     if (statusText) {
-                        statusText.textContent = `⚠️ ${msg}`;
-                        statusText.style.color = '#f59e0b';
+                        statusText.textContent = msg;
+                        statusText.style.color = '#dc2626';
+                        statusText.style.display = 'block';
                     }
                 },
                 {
@@ -120,24 +83,4 @@ document.addEventListener('DOMContentLoaded', function () {
             );
         });
     }
-
-    // Attach click events to preset buttons
-    const presetButtons = document.querySelectorAll('.preset-btn');
-    presetButtons.forEach(btn => {
-        btn.addEventListener('click', function () {
-            const cityKey = this.getAttribute('data-preset');
-            const data = presets[cityKey];
-            if (data) {
-                if (inputLat) inputLat.value = data.lat.toFixed(8);
-                if (inputLon) inputLon.value = data.lon.toFixed(8);
-                if (inputAddress && (!inputAddress.value || inputAddress.value.trim() === '')) {
-                    inputAddress.value = data.address;
-                }
-                if (statusText) {
-                    statusText.textContent = `📍 Selected preset: ${data.name} (${data.lat}, ${data.lon})`;
-                    statusText.style.color = '#4f46e5';
-                }
-            }
-        });
-    });
 });
