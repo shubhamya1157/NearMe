@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NearMe — Discover People Nearby & Match Hobbies</title>
+    <link rel="stylesheet" href="css/index.css">
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header class="site-header">
+        <div class="nav-container">
+            <a href="index.html" class="brand-logo">
+                <span class="brand-icon">📍</span>
+                <span>NearMe</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="login.html">Login</a></li>
+                <li><a href="register.html" class="btn-nav-primary">Sign Up</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Hero Section -->
+        <section class="hero">
+            <span class="hero-badge">🎯 Location & Hobby Discovery Platform</span>
+            <h1>Find People <span class="highlight">Near You</span> Who Share Your <span class="highlight">Hobbies</span></h1>
+            <p class="lead">
+                Sign in with your email and password, add your location and favorite hobbies, and let NearMe find like-minded people around you with calculated distance and matched interests.
+            </p>
+            <div class="hero-actions">
+                <a href="register.html" class="btn btn-primary" style="padding: 0.85rem 1.75rem; font-size: 1.05rem;">
+                    🚀 Get Started Free
+                </a>
+                <a href="login.html" class="btn btn-secondary" style="padding: 0.85rem 1.75rem; font-size: 1.05rem;">
+                    🔑 Sign In
+                </a>
+            </div>
+        </section>
+
+        <!-- Features Grid -->
+        <section class="features-grid">
+            <div class="feature-card">
+                <span class="feature-icon">🛰️</span>
+                <h3>Accurate Distance Finding</h3>
+                <p>
+                    Utilizes real geographic coordinates and the mathematical Haversine formula to compute exact distances in kilometers between you and other users.
+                </p>
+            </div>
+
+            <div class="feature-card">
+                <span class="feature-icon">🎯</span>
+                <h3>Hobby Intersection Matching</h3>
+                <p>
+                    Automatically highlights common hobbies, counts shared passions, and helps you discover people who share your exact interests like coding, hiking, or gaming.
+                </p>
+            </div>
+
+            <div class="feature-card">
+                <span class="feature-icon">📍</span>
+                <h3>One-Click Geolocation</h3>
+                <p>
+                    Easily capture your live GPS coordinates with the browser Geolocation API, pick from quick presets, or enter your address manually.
+                </p>
+            </div>
+        </section>
+
+        <!-- Test Login Credentials Box for Development & Grading -->
+        <div class="demo-box">
+            <h4>🧪 Development & Demo Accounts</h4>
+            <p style="font-size: 0.88rem; color: #64748b; margin-bottom: 0.5rem;">
+                The database schema automatically creates pre-populated demo accounts centered around Kota for immediate testing:
+            </p>
+            <table class="demo-table">
+                <thead>
+                    <tr>
+                        <th>Account Email</th>
+                        <th>Password</th>
+                        <th>Name</th>
+                        <th>Sample Hobbies</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>alice@example.com</code></td>
+                        <td><code>demo123</code></td>
+                        <td>Alice Walker (Demo Center)</td>
+                        <td>Coding, Photography, Hiking, Reading</td>
+                    </tr>
+                    <tr>
+                        <td><code>bob@example.com</code></td>
+                        <td><code>demo123</code></td>
+                        <td>Bob Sharma (~4.2 km)</td>
+                        <td>Coding, Gaming, Hiking, Football</td>
+                    </tr>
+                    <tr>
+                        <td><code>charlie@example.com</code></td>
+                        <td><code>demo123</code></td>
+                        <td>Charlie Patel (~2.2 km)</td>
+                        <td>Photography, Traveling, Cooking, Music</td>
+                    </tr>
+                    <tr>
+                        <td><code>diana@example.com</code></td>
+                        <td><code>demo123</code></td>
+                        <td>Diana Mehta (~1.3 km)</td>
+                        <td>Reading, Yoga, Painting, Photography</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <p>&copy; 2026 NearMe Application. Built with HTML, CSS, JavaScript, Procedural PHP, and MySQL.</p>
+    </footer>
+
+</body>
+</html>

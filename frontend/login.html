@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In — NearMe</title>
+    <link rel="stylesheet" href="css/index.css">
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header class="site-header">
+        <div class="nav-container">
+            <a href="index.html" class="brand-logo">
+                <span class="brand-icon">📍</span>
+                <span>NearMe</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="register.html" class="btn-nav-primary">Sign Up</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="auth-wrapper">
+            <div class="auth-card">
+                <h1>Welcome Back</h1>
+                <p class="subtitle">Sign in to find people and match hobbies near you</p>
+
+                <!-- Dynamic Alert Banner -->
+                <div id="alertBox" style="display: none;"></div>
+
+                <form action="../backend/login.php" method="POST">
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" name="email" class="form-control" placeholder="you@example.com" required autofocus>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" name="password" class="form-control" placeholder="••••••••" required>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-block" style="margin-top: 0.5rem;">
+                        Sign In
+                    </button>
+                </form>
+
+                <!-- Quick Autofill for Demo Evaluation -->
+                <div style="margin-top: 1.5rem; padding-top: 1.25rem; border-top: 1px dashed var(--border-color); text-align: center;">
+                    <p style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 0.6rem;">
+                        Quick testing with demo account:
+                    </p>
+                    <button type="button" id="btnAutofillDemo" class="btn btn-secondary btn-sm" style="width: 100%;">
+                        ⚡ Autofill Demo Account (Alice)
+                    </button>
+                </div>
+
+                <p style="text-align: center; font-size: 0.88rem; margin-top: 1.5rem; color: var(--text-muted);">
+                    Don't have an account? <a href="register.html" style="color: var(--primary); font-weight: 600; text-decoration: none;">Create one here</a>
+                </p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <p>&copy; 2026 NearMe Application. Built with Procedural PHP &amp; MySQL.</p>
+    </footer>
+
+    <script>
+        // Check for URL query parameters to show alerts
+        document.addEventListener('DOMContentLoaded', function () {
+            const params = new URLSearchParams(window.location.search);
+            const alertBox = document.getElementById('alertBox');
+
+            if (params.has('error')) {
+                const err = params.get('error');
+                let message = 'An error occurred during sign in.';
+                if (err === 'invalid_credentials') {
+                    message = 'Incorrect email or password. Please verify and try again.';
+                } else if (err === 'empty_fields') {
+                    message = 'Please fill in both email and password.';
+                }
+                alertBox.className = 'alert alert-error';
+                alertBox.innerHTML = `<span>⚠️</span> <span>${message}</span>`;
+                alertBox.style.display = 'flex';
+            } else if (params.has('logged_out')) {
+                alertBox.className = 'alert alert-success';
+                alertBox.innerHTML = `<span>✅</span> <span>You have been safely signed out.</span>`;
+                alertBox.style.display = 'flex';
+            }
+
+            // Autofill demo button
+            const btnDemo = document.getElementById('btnAutofillDemo');
+            if (btnDemo) {
+                btnDemo.addEventListener('click', function () {
+                    document.getElementById('email').value = 'alice@example.com';
+                    document.getElementById('password').value = 'demo123';
+                });
+            }
+        });
+    </script>
+</body>
+</html>

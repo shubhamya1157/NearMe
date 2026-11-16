@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Account — NearMe</title>
+    <link rel="stylesheet" href="css/index.css">
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header class="site-header">
+        <div class="nav-container">
+            <a href="index.html" class="brand-logo">
+                <span class="brand-icon">📍</span>
+                <span>NearMe</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="login.html" class="btn-nav-primary">Sign In</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="auth-wrapper">
+            <div class="auth-card">
+                <h1>Create Account</h1>
+                <p class="subtitle">Join NearMe and discover like-minded people around you</p>
+
+                <!-- Dynamic Alert Banner -->
+                <div id="alertBox" style="display: none;"></div>
+
+                <form action="../backend/register.php" method="POST">
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" name="email" class="form-control" placeholder="you@example.com" required autofocus>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" name="password" class="form-control" placeholder="At least 6 characters" minlength="6" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="confirm_password">Confirm Password</label>
+                        <input type="password" id="confirm_password" name="confirm_password" class="form-control" placeholder="Re-type your password" minlength="6" required>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-block" style="margin-top: 0.5rem;">
+                        Create Account &amp; Continue
+                    </button>
+                </form>
+
+                <p style="text-align: center; font-size: 0.88rem; margin-top: 1.5rem; color: var(--text-muted);">
+                    Already have an account? <a href="login.html" style="color: var(--primary); font-weight: 600; text-decoration: none;">Sign in here</a>
+                </p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <p>&copy; 2026 NearMe Application. Built with Procedural PHP &amp; MySQL.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const params = new URLSearchParams(window.location.search);
+            const alertBox = document.getElementById('alertBox');
+
+            if (params.has('error')) {
+                const err = params.get('error');
+                let message = 'An error occurred during registration.';
+                if (err === 'empty_fields') {
+                    message = 'Please fill in all required fields.';
+                } else if (err === 'invalid_email') {
+                    message = 'Please provide a valid email address.';
+                } else if (err === 'password_too_short') {
+                    message = 'Password must be at least 6 characters long.';
+                } else if (err === 'password_mismatch') {
+                    message = 'The entered passwords do not match. Please verify.';
+                } else if (err === 'email_exists') {
+                    message = 'An account with this email address already exists. Please sign in instead.';
+                } else if (err === 'registration_failed') {
+                    message = 'Database registration failed. Please ensure MySQL is running and schema is imported.';
+                }
+
+                alertBox.className = 'alert alert-error';
+                alertBox.innerHTML = `<span>⚠️</span> <span>${message}</span>`;
+                alertBox.style.display = 'flex';
+            }
+        });
+    </script>
+</body>
+</html>
